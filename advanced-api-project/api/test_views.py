@@ -1,11 +1,20 @@
 from rest_framework.test import APITestCase
 from rest_framework import status
+from django.contrib.auth.models import User
+from django_filters import rest_framework as filters
+from rest_framework.filters import SearchFilter, OrderingFilter
 from .models import Book, Author
 from .serializers import BookSerializer
+from .filters import BookFilter
 
 class BookTests(APITestCase):
     def setUp(self):
         """Set up initial data for testing"""
+        # Create a user
+        self.user = User.objects.create_user(username='testuser', password='testpassword')
+        self.client.login(username='testuser', password='testpassword')  # Log in the user
+
+        # Create author and book
         self.author = Author.objects.create(name='Author Name')
         self.book = Book.objects.create(
             title='Book Title',
