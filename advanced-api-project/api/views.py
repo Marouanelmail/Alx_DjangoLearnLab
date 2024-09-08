@@ -2,9 +2,10 @@
 #from django.shortcuts import render
 
 # Create your views here.
+import datetime
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .models import Book
 
 # Book List View - Displays a list of all books
@@ -84,7 +85,7 @@ class BookUpdateView(UpdateView):
         return super().form_valid(form)    
     
 
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 class BookCreateView(LoginRequiredMixin, CreateView):
