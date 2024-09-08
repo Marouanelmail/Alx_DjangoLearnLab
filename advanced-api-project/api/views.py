@@ -7,36 +7,57 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from .models import Book
 
-# ListView for retrieving all books
+# Book List View - Displays a list of all books
 class BookListView(ListView):
+    """Handles listing all book instances"""
     model = Book
-    template_name = 'book_list.html'  # Customize the template if needed
+    template_name = 'book_list.html'
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Allow read access to everyone, but modify access to authenticated users
 
-# DetailView for retrieving a single book by ID
+# Book Detail View - Displays details for a single book instance
 class BookDetailView(DetailView):
+    """Handles displaying details for a specific book by ID"""
     model = Book
     template_name = 'book_detail.html'
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Allow read access to everyone, but modify access to authenticated users
 
-# CreateView for adding a new book
+# Book Create View - Allows users to add a new book
 class BookCreateView(CreateView):
-    model = Book
-    fields = ['title', 'publication_year', 'author']  # Define form fields
-    template_name = 'book_form.html'
-    success_url = reverse_lazy('book_list')  # Redirect to book list after creating
-
-# UpdateView for modifying an existing book
-class BookUpdateView(UpdateView):
+    """Handles creation of a new book instance"""
     model = Book
     fields = ['title', 'publication_year', 'author']
     template_name = 'book_form.html'
     success_url = reverse_lazy('book_list')
+    permission_classes = [IsAuthenticated]  # Require authentication to create a book
 
-# DeleteView for removing a book
+    def form_valid(self, form):
+        """
+        Overrides the form_valid method to add custom validation
+        For example: Ensuring that the publication year is not in the future.
+        """
+        if form.cleaned_data['publication_year'] > datetime.date.today().year:
+            form.add_error('publication_year', 'Publication year cannot be in the future.')
+            return self.form_invalid(form)
+        return super().form_valid(form)
+
+# Book Update View - Allows users to update an existing book
+class BookUpdateView(UpdateView):
+    """Handles updating an existing book instance"""
+    model = Book
+    fields = ['title', 'publication_year', 'author']
+    template_name = 'book_form.html'
+    success_url = reverse_lazy('book_list')
+    permission_classes = [IsAuthenticated]  # Require authentication to update a book
+
+# Book Delete View - Allows users to delete a book
 class BookDeleteView(DeleteView):
+    """Handles deleting a book instance"""
     model = Book
     template_name = 'book_confirm_delete.html'
     success_url = reverse_lazy('book_list')
+    permission_classes = [IsAuthenticated]  # Require authentication to delete a book
 
+#######
 
 class BookCreateView(CreateView):
     model = Book
