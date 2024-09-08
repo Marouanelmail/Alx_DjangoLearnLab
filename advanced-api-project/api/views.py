@@ -1,8 +1,10 @@
-from django.shortcuts import render
+#from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+#from django.shortcuts import render
 
 # Create your views here.
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from .models import Book
 
 # ListView for retrieving all books
