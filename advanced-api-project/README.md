@@ -63,3 +63,23 @@ The Book API supports advanced query features:
 - List all books by J.K. Rowling: `GET /api/books/?author=J.K.%20Rowling`
 - Search for books containing 'Harry' in the title: `GET /api/books/?search=Harry`
 - Order books by publication year: `GET /api/books/?ordering=publication_year`
+
+## Testing API Endpoints
+
+### Test Setup
+- **Test Framework**: Uses Django's built-in test framework.
+- **Test Database**: A separate test database is used.
+
+### Test Cases
+- **Creating a Book**: Tests the POST request to create a new book.
+- **Updating a Book**: Tests the PUT request to update an existing book.
+- **Deleting a Book**: Tests the DELETE request to remove a book.
+- **Listing Books**: Tests the GET request to retrieve all books.
+- **Filtering Books**: Tests the filtering functionality for books.
+- **Searching Books**: Tests the search functionality for books.
+- **Ordering Books**: Tests the ordering functionality for books.
+
+### Running Tests
+Execute tests with:
+```bash
+python manage.py test api
