@@ -39,3 +39,27 @@ You can test the API using tools like Postman or curl.
 2. Install the dependencies using `pip install -r requirements.txt`.
 3. Apply migrations using `python manage.py migrate`.
 4. Run the development server: `python manage.py runserver`.
+
+## Advanced Query Capabilities
+
+The Book API supports advanced query features:
+
+### Filtering
+
+- **Title**: Filter by title using `?title=<keyword>`.
+- **Author**: Filter by author using `?author=<keyword>`.
+- **Publication Year**: Filter by publication year using `?publication_year=<year>`.
+
+### Searching
+
+- **Search**: Use the `search` parameter to search by title or author name: `?search=<keyword>`.
+
+### Ordering
+
+- **Ordering**: Order results by title or publication year using `?ordering=<field>` where `<field>` is either `title` or `publication_year`.
+
+**Examples**:
+
+- List all books by J.K. Rowling: `GET /api/books/?author=J.K.%20Rowling`
+- Search for books containing 'Harry' in the title: `GET /api/books/?search=Harry`
+- Order books by publication year: `GET /api/books/?ordering=publication_year`

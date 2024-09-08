@@ -107,3 +107,21 @@ class BookDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'book_confirm_delete.html'
     success_url = reverse_lazy('book_list')
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+#######
+from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
+from .models import Book
+from .serializers import BookSerializer
+from .filters import BookFilter
+
+class BookListView(generics.ListAPIView):
+    """Handles listing all book instances with filtering, searching, and ordering"""
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
+    filterset_class = BookFilter
+    search_fields = ['title', 'author__name']
+    ordering_fields = ['title', 'publication_year']
+    ordering = ['title']  # Default ordering
