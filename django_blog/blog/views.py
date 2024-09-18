@@ -184,3 +184,12 @@ class PostByTagView(ListView):
     def get_queryset(self):
         tag_name = self.kwargs['tag_name']
         return Post.objects.filter(tags__name=tag_name)
+
+from django.shortcuts import render
+from taggit.models import Tag
+from .models import Post
+
+def posts_by_tag(request, tag_name):
+    tag = Tag.objects.get(name=tag_name)
+    posts = Post.objects.filter(tags__in=[tag])
+    return render(request, 'blog/posts_by_tag.html', {'posts': posts, 'tag': tag})
