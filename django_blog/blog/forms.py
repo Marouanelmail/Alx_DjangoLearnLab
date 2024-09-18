@@ -83,7 +83,7 @@ from taggit.forms import TagWidget
 from .models import Post
 
 class PostForm(forms.ModelForm):
-    tags = forms.CharField(widget=TagWidget(), required=False)  # Use TagWidget for better tag handling
+    tags = forms.CharField(widgets=TagWidget(), required=False)  # Use TagWidget for better tag handling
 
     class Meta:
         model = Post
