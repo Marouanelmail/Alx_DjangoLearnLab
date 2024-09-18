@@ -1,0 +1,14 @@
+<h2>Profile</h2>
+<p>Username: {{ user.username }}</p>
+<p>Email: {{ user.email }}</p>
+<a href="{% url 'logout' %}">Logout</a>
+
+<h2>Update Profile</h2>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ u_form.as_p }}
+    {{ p_form.as_p }}
+    <button type="submit">Update</button>
+</form>
+
+<img src="{{ user.profile.image.url }}" alt="{{ user.username }}'s profile picture" />
