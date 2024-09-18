@@ -127,6 +127,18 @@ class PostDetailView(View):
             comment.save()
         return redirect('post-detail', pk=post.pk)
 
+class CommentCreateView(CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_form.html'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return self.request.POST.get('next', '/')
+
 class CommentUpdateView(UpdateView):
     model = Comment
     fields = ['content']
@@ -138,7 +150,9 @@ class CommentUpdateView(UpdateView):
 class CommentDeleteView(DeleteView):
     model = Comment
     template_name = 'blog/comment_confirm_delete.html'
-    success_url = '/posts/'
+    def get_success_url(self):
+        return self.request.POST.get('next', '/')
+
 
     def get_queryset(self):
         return Comment.objects.filter(author=self.request.user)
