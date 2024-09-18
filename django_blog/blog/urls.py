@@ -41,10 +41,10 @@ urlpatterns = [
 ]
 
 from django.urls import path
-from .views import search, PostByTagView
+from .views import search, PostByTagListView
 
 urlpatterns = [
     path('search/', search, name='search'),
-    path('tags/<str:tag_name>/', PostByTagView.as_view(), name='posts_by_tag'),
+    path('tags/<slug:tag_slug>/', PostByTagListView.as_view()(), name='posts_by_tag'),
     # other URL patterns
 ]
