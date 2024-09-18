@@ -157,3 +157,30 @@ class CommentDeleteView(DeleteView):
     def get_queryset(self):
         return Comment.objects.filter(author=self.request.user)
 
+from django.db.models import Q
+from django.shortcuts import render
+from .models import Post
+
+def search(request):
+    query = request.GET.get('q')
+    if query:
+        posts = Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
+    else:
+        posts = Post.objects.none()
+
+    return render(request, 'blog/search_results.html', {'posts': posts, 'query': query})
+
+from django.views.generic import ListView
+from .models import Post, Tag
+
+class PostByTagView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'
+    
+    def get_queryset(self):
+        tag_name = self.kwargs['tag_name']
+        return Post.objects.filter(tags__name=tag_name)

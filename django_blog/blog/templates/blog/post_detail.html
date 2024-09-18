@@ -36,3 +36,16 @@
         </form>
     {% endif %}
 {% endblock %}
+
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ post.title }}</h1>
+<p>{{ post.content }}</p>
+<p>Published on: {{ post.published_date }}</p>
+<p>Tags: 
+    {% for tag in post.tags.all %}
+        <a href="{% url 'posts_by_tag' tag.name %}">{{ tag.name }}</a>
+    {% endfor %}
+</p>
+{% endblock %}
