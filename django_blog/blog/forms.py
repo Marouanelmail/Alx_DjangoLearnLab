@@ -77,3 +77,14 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']
+
+from django import forms
+from taggit.forms import TagWidget
+from .models import Post
+
+class PostForm(forms.ModelForm):
+    tags = forms.CharField(widget=TagWidget(), required=False)  # Use TagWidget for better tag handling
+
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'tags']
