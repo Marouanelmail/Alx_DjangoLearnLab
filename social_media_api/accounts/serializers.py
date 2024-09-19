@@ -17,10 +17,12 @@ class RegistrationSerializer(serializers.ModelSerializer):
         fields = ['username', 'password', 'email']
 
     def create(self, validated_data):
+        # Use create_user to ensure password hashing
         user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
-            password=validated_data['password']
+            password=validated_data['password']  # create_user hashes the password
         )
+        # Create an authentication token for the new user
         Token.objects.create(user=user)
         return user
