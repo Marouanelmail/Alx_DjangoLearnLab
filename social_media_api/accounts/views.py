@@ -73,8 +73,9 @@ class FollowedUsersListView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        followed_users = request.user.following.all()
-        serializer = CustomUserSerializer(followed_users, many=True)
+        # Use CustomUser.objects.all() to list all users
+        all_users = CustomUser.objects.all()
+        serializer = CustomUserSerializer(all_users, many=True)
         return Response(serializer.data)
 
 class FollowedUsersView(generics.GenericAPIView):
