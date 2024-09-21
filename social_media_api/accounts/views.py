@@ -76,3 +76,11 @@ class FollowedUsersListView(generics.GenericAPIView):
         followed_users = request.user.following.all()
         serializer = CustomUserSerializer(followed_users, many=True)
         return Response(serializer.data)
+
+class FollowedUsersView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        followed_users = request.user.following.all()
+        serializer = CustomUserSerializer(followed_users, many=True)
+        return Response(serializer.data)
