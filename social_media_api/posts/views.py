@@ -88,3 +88,33 @@ class NotificationListView(generics.ListAPIView):
 
     def get_queryset(self):
         return Notification.objects.filter(recipient=self.request.user).order_by('-timestamp')
+
+from rest_framework import generics, status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+from .models import Post
+from .serializers import PostSerializer
+from notifications.models import Notification
+
+@api_view(['POST'])
+def like_post(request, pk):
+    # Retrieve the post object using get_object_or_404
+    post = get_object_or_404(Post, pk=pk)
+    
+    # Check if the post is already liked by the user
+    if post.likes.filter(id=request.user.id).exists():
+        return Response({'message': 'You have already liked this post.'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    # Add the like
+    post.likes.add(request.user)
+    
+    # Create a notification for the post author
+    Notification.objects.create(
+        recipient=post.author,
+        actor=request.user,
+        verb='liked',
+        target=post,
+    )
+
+    return Response({'message': 'Post liked successfully.'}, status=status.HTTP_200_OK)
