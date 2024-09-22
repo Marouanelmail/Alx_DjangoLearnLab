@@ -100,7 +100,7 @@ from notifications.models import Notification
 @api_view(['POST'])
 def like_post(request, pk):
     # Retrieve the post object using get_object_or_404
-    post = get_object_or_404(Post, pk=pk)
+    post = generics.get_object_or_404(Post, pk=pk)
     
     # Check if the post is already liked by the user
     if post.likes.filter(id=request.user.id).exists():
